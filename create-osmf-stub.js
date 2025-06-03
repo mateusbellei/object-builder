@@ -8,9 +8,9 @@ const CONFIG = {
   TARGET_PLAYER: "27.0",
 };
 
-console.log("🔧 Criando stub da biblioteca OSMF...");
+console.log("🔧 Creating OSMF library stub...");
 
-// Criar arquivo ActionScript stub
+// Create ActionScript stub file
 const osmfStubAS = `
 package org.osmf.events {
   import flash.events.Event;
@@ -34,19 +34,19 @@ package org.osmf.events {
 }
 `;
 
-// Criar diretório para o stub
+// Create directory for the stub
 const stubDir = path.join("temp", "osmf-stub", "org", "osmf", "events");
 if (!fs.existsSync(stubDir)) {
   fs.mkdirSync(stubDir, { recursive: true });
 }
 
-// Salvar arquivo ActionScript
+// Save ActionScript file
 const timeEventPath = path.join(stubDir, "TimeEvent.as");
 fs.writeFileSync(timeEventPath, osmfStubAS.trim());
 
-console.log("📝 TimeEvent.as criado");
+console.log("📝 TimeEvent.as created");
 
-// Compilar para SWC
+// Compile to SWC
 const compcCommand = [
   `"${path.join(CONFIG.FLEX_SDK, "bin", "compc.bat")}"`,
   `-target-player=${CONFIG.TARGET_PLAYER}`,
@@ -66,9 +66,9 @@ const compcCommand = [
   `-warnings=false`,
 ].join(" ");
 
-console.log("🔨 Compilando SWC...");
+console.log("🔨 Compiling SWC...");
 
-// Definir variáveis de ambiente
+// Define environment variables
 const env = {
   ...process.env,
   PLAYERGLOBAL_HOME: path.resolve(
@@ -78,17 +78,17 @@ const env = {
 
 exec(compcCommand, { env: env }, (error, stdout, stderr) => {
   if (error) {
-    console.error(`❌ Erro ao compilar SWC: ${stderr || error.message}`);
+    console.error(`❌ Error compiling SWC: ${stderr || error.message}`);
     return;
   }
 
   if (fs.existsSync(path.join("libs", "osmf.swc"))) {
-    console.log("✅ OSMF stub criado com sucesso!");
+    console.log("✅ OSMF stub created successfully!");
 
-    // Limpar arquivos temporários
+    // Clean temporary files
     fs.rmSync(path.join("temp"), { recursive: true, force: true });
-    console.log("🧹 Arquivos temporários removidos");
+    console.log("🧹 Temporary files removed");
   } else {
-    console.error("❌ Falha ao criar osmf.swc");
+    console.error("❌ Failed to create osmf.swc");
   }
 });

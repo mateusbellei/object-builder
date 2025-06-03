@@ -1,68 +1,68 @@
-# 🚀 ObjectBuilder - Início Rápido
+# 🚀 ObjectBuilder - Quick Start
 
-## Para Novos Desenvolvedores
+## For New Developers
 
-### 📦 Setup em 3 Passos
+### 📦 Setup in 3 Steps
 
-1. **Clone e instale dependências:**
+1. **Clone and install dependencies:**
 
    ```bash
-   git clone <repositorio>
+   git clone <repository>
    cd object-builder
    npm install
    ```
 
-2. **Verificar se tudo está correto:**
+2. **Verify everything is correct:**
 
    ```bash
    npm run check-setup
    ```
 
-3. **Setup automático (se necessário):**
+3. **Automatic setup (if needed):**
    ```bash
    npm run setup
    ```
 
-### 🎯 Uso Diário
+### 🎯 Daily Usage
 
 ```bash
-# Build completo (30-60s)
+# Complete build (30-60s)
 npm run build
 
-# Executar ObjectBuilder
+# Execute ObjectBuilder
 npm run run
 
-# Limpar arquivos gerados
+# Clean generated files
 npm run clean
 ```
 
-### 📋 Checklist Rápido
+### 📋 Quick Checklist
 
-**Antes do primeiro build, certifique-se que existe:**
+**Before first build, make sure these exist:**
 
 - [ ] `libs/Flex_4.16.1_AIR_32.0/` (Flex SDK)
 - [ ] `libs/AIRSDK_51.2.1/` (AIR SDK)
-- [ ] `libs/mignari_core.swc` (Biblioteca externa)
-- [ ] `libs/mignari.swc` (Biblioteca externa)
-- [ ] `libs/mignari_assets.swc` (Biblioteca externa)
-- [ ] `libs/blooddy_crypto.swc` (Biblioteca externa)
-- [ ] `libs/NailLib.swc` (Biblioteca externa)
+- [ ] `libs/mignari_core.swc` (External library)
+- [ ] `libs/mignari.swc` (External library)
+- [ ] `libs/mignari_assets.swc` (External library)
+- [ ] `libs/blooddy_crypto.swc` (External library)
+- [ ] `libs/NailLib.swc` (External library)
 
-### ⚡ Solução Rápida de Problemas
+### ⚡ Quick Troubleshooting
 
-| Problema            | Solução                                              |
-| ------------------- | ---------------------------------------------------- |
-| Erro OSMF           | `npm run create-osmf`                                |
-| Erro de certificado | Deletar `object_builder.p12` e rodar `npm run build` |
-| Erro de dependência | `npm run check-setup`                                |
-| Build não funciona  | `npm run clean && npm run build`                     |
+| Problem           | Solution                                            |
+| ----------------- | --------------------------------------------------- |
+| OSMF error        | `npm run create-osmf`                               |
+| Certificate error | Delete `object_builder.p12` and run `npm run build` |
+| Dependency error  | `npm run check-setup`                               |
+| Build not working | `npm run clean && npm run build`                    |
 
-### 🎉 Sucesso!
+### 🎉 Success!
 
-Se o comando `npm run run` abre o ObjectBuilder, está tudo funcionando!
+If the command `npm run run` opens ObjectBuilder, everything is working!
 
-**Tempo total de setup: ~2 minutos**
+**Total setup time: ~2 minutes**
 
 ---
 
-Para mais detalhes: [README.md](README.md)
+For more details: [README.md](README.md)

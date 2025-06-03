@@ -1,15 +1,15 @@
-// Configurações do Build - ObjectBuilder
+// SDK Configuration
 module.exports = {
-  // Configurações de SDK
+  // SDK Configuration
   FLEX_SDK: "libs/Flex_4.16.1_AIR_32.0",
   AIRSDK: "libs/AIRSDK_51.2.1",
   TARGET_PLAYER: "27.0",
 
-  // Configurações de certificado
+  // Certificate Configuration
   CERT_NAME: "object_builder",
   CERT_PASS: "ObjectBuilder2024!",
 
-  // Bibliotecas externas necessárias
+  // Required external libraries
   EXTERNAL_LIBS: [
     "mignari_core.swc",
     "mignari.swc",
@@ -18,10 +18,10 @@ module.exports = {
     "NailLib.swc",
   ],
 
-  // Locales suportados
+  // Supported locales
   LOCALES: "en_US,es_ES,pt_BR",
 
-  // Configurações de compilação
+  // Compilation settings
   COMPILER: {
     DEBUG: false,
     OPTIMIZE: true,
@@ -30,7 +30,7 @@ module.exports = {
     ACCESSIBLE: false,
   },
 
-  // Arquivos que devem ser copiados para bin-debug
+  // Files that should be copied to bin-debug
   COPY_FILES: [
     { src: "src/firstRun/versions.xml", dest: "bin-debug/versions.xml" },
     { src: "src/firstRun/sprites.xml", dest: "bin-debug/sprites.xml" },

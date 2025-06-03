@@ -1,191 +1,191 @@
-# ObjectBuilder - Build Automatizado
+# ObjectBuilder - Automated Build System
 
-> Sistema de build otimizado para o ObjectBuilder (Adobe AIR/ActionScript)
+> Optimized build system for ObjectBuilder (Adobe AIR/ActionScript)
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-### Software Necessário
+### Required Software
 
 - **Node.js 16+** ([Download](https://nodejs.org/))
 - **Git** ([Download](https://git-scm.com/))
-- **Windows 10/11** (testado)
+- **Windows 10/11** (tested)
 
-### Estrutura de Arquivos Necessária
+### Required File Structure
 
 ```
 object-builder/
 ├── libs/
 │   ├── Flex_4.16.1_AIR_32.0/     # Flex SDK
 │   ├── AIRSDK_51.2.1/            # AIR SDK
-│   ├── mignari_core.swc          # Bibliotecas externas
+│   ├── mignari_core.swc          # External libraries
 │   ├── mignari.swc
 │   ├── mignari_assets.swc
 │   ├── blooddy_crypto.swc
 │   └── NailLib.swc
 ├── src/
-│   ├── ObjectBuilder.mxml        # Arquivo principal
+│   ├── ObjectBuilder.mxml        # Main file
 │   ├── ObjectBuilderWorker.as    # Worker
-│   ├── ObjectBuilder-app.xml     # Configuração AIR
+│   ├── ObjectBuilder-app.xml     # AIR configuration
 │   └── firstRun/
 │       ├── versions.xml
 │       └── sprites.xml
 └── assets/
-    └── icon/                     # Ícones da aplicação
+    └── icon/                     # Application icons
 ```
 
-## 🚀 Setup Inicial (Nova Máquina)
+## 🚀 Initial Setup (New Machine)
 
-### 1. Clone e Dependências
+### 1. Clone and Dependencies
 
 ```bash
-git clone <repositorio>
+git clone <repository>
 cd object-builder
 npm install
 ```
 
-### 2. Verificar Setup
+### 2. Verify Setup
 
 ```bash
 npm run check-setup
 ```
 
-### 3. Primeiro Build
+### 3. First Build
 
 ```bash
 npm run build
 ```
 
-## 📦 Comandos Disponíveis
+## 📦 Available Commands
 
-| Comando               | Descrição               |
+| Command               | Description             |
 | --------------------- | ----------------------- |
-| `npm run build`       | Build completo (30-60s) |
-| `npm run clean`       | Limpar arquivos gerados |
-| `npm run run`         | Executar ObjectBuilder  |
-| `npm run check-setup` | Verificar dependências  |
-| `npm run create-osmf` | Recriar biblioteca OSMF |
+| `npm run build`       | Complete build (30-60s) |
+| `npm run clean`       | Clean generated files   |
+| `npm run run`         | Execute ObjectBuilder   |
+| `npm run check-setup` | Verify dependencies     |
+| `npm run create-osmf` | Recreate OSMF library   |
 
-## 🛠️ Como Funciona
+## 🛠️ How It Works
 
-### Processo Automatizado
+### Automated Process
 
-1. **Verificação**: Dependências e SDKs
-2. **Certificado**: Geração automática se necessário
-3. **Worker**: Compilação do ObjectBuilderWorker.swf
-4. **Principal**: Compilação do ObjectBuilder.mxml
-5. **Empacotamento**: Criação do executável final
+1. **Verification**: Dependencies and SDKs
+2. **Certificate**: Automatic generation if needed
+3. **Worker**: Compilation of ObjectBuilderWorker.swf
+4. **Main**: Compilation of ObjectBuilder.mxml
+5. **Packaging**: Creation of final executable
 
-### Saídas Geradas
+### Generated Outputs
 
-- `bin-debug/ObjectBuilder.swf` - SWF principal (~5MB)
+- `bin-debug/ObjectBuilder.swf` - Main SWF (~5MB)
 - `workerswfs/ObjectBuilderWorker.swf` - Worker (~0.6MB)
-- `bin/ObjectBuilder.exe/` - Bundle executável final
+- `bin/ObjectBuilder.exe/` - Final executable bundle
 
-## 🎯 Solução de Problemas
+## 🎯 Troubleshooting
 
-### Erro: "playerglobal.swc não encontrado"
+### Error: "playerglobal.swc not found"
 
 ```bash
-# Verificar se os SDKs estão na pasta libs/
+# Check if SDKs are in libs/ folder
 npm run check-setup
 ```
 
-### Erro: "OSMF TimeEvent not found"
+### Error: "OSMF TimeEvent not found"
 
 ```bash
-# Recriar biblioteca OSMF
+# Recreate OSMF library
 npm run create-osmf
 npm run build
 ```
 
-### Erro: "Certificado inválido"
+### Error: "Invalid certificate"
 
 ```bash
-# Remover certificado existente
+# Remove existing certificate
 del object_builder.p12
 npm run build
 ```
 
 ## 📊 Performance
 
-- **Tempo de Build**: 30-60 segundos
-- **Antes**: 5-10 minutos (manual)
-- **Melhoria**: ~90% mais rápido
-- **SWF Final**: ~5.24 MB
+- **Build Time**: 30-60 seconds
+- **Before**: 5-10 minutes (manual)
+- **Improvement**: ~90% faster
+- **Final SWF**: ~5.24 MB
 - **Worker**: ~0.61 MB
 
-## 🔧 Configuração Avançada
+## 🔧 Advanced Configuration
 
-### Alterar Configurações
+### Change Settings
 
-Edite `build.config.js`:
+Edit `build.config.js`:
 
 ```javascript
 module.exports = {
   TARGET_PLAYER: "27.0",
   CERT_PASS: "ObjectBuilder2024!",
-  // ... outras configurações
+  // ... other settings
 };
 ```
 
 ### Debug Mode
 
-Para desenvolvimento com debug:
+For development with debug:
 
 ```bash
-# Editar build-optimized.js
+# Edit build-optimized.js
 compiler.debug=true
 compiler.optimize=false
 ```
 
-## 📝 Logs e Debug
+## 📝 Logs and Debug
 
-### Build Verbose
+### Verbose Build
 
 ```bash
 node build-optimized.js
 ```
 
-### Executar com Debug
+### Run with Debug
 
 ```bash
 libs\AIRSDK_51.2.1\bin\adl.exe src\ObjectBuilder-app.xml bin-debug
 ```
 
-## 🤝 Contribuição
+## 🤝 Contributing
 
-### Estrutura do Build
+### Build Structure
 
-- `build-optimized.js` - Script principal
+- `build-optimized.js` - Main script
 - `package.json` - NPM scripts
-- `scripts/` - Scripts auxiliares
-- `create-osmf-stub.js` - Gerador da lib OSMF
+- `scripts/` - Helper scripts
+- `create-osmf-stub.js` - OSMF library generator
 
-### Adicionando Nova Biblioteca
+### Adding New Library
 
-1. Adicionar SWC em `libs/`
-2. Incluir em `externalLibs` no build-optimized.js
-3. Testar build completo
+1. Add SWC to `libs/`
+2. Include in `externalLibs` in build-optimized.js
+3. Test complete build
 
-## 📋 Checklist para Nova Máquina
+## 📋 New Machine Checklist
 
-- [ ] Node.js instalado
-- [ ] Projeto clonado
-- [ ] SDKs na pasta `libs/`
-- [ ] `npm install` executado
-- [ ] `npm run check-setup` passou
-- [ ] `npm run build` funcionou
-- [ ] `npm run run` executou ObjectBuilder
+- [ ] Node.js installed
+- [ ] Project cloned
+- [ ] SDKs in `libs/` folder
+- [ ] `npm install` executed
+- [ ] `npm run check-setup` passed
+- [ ] `npm run build` worked
+- [ ] `npm run run` executed ObjectBuilder
 
-## 🆘 Suporte
+## 🆘 Support
 
-Em caso de problemas:
+In case of problems:
 
-1. Executar `npm run check-setup`
-2. Verificar logs do build
-3. Consultar seção "Solução de Problemas"
-4. Verificar se todas as bibliotecas estão presentes
+1. Run `npm run check-setup`
+2. Check build logs
+3. Consult "Troubleshooting" section
+4. Verify all libraries are present
 
 ---
 
-**Resultado**: Build automatizado do ObjectBuilder funcionando em 30-60 segundos! 🎉
+**Result**: Automated ObjectBuilder build working in 30-60 seconds! 🎉

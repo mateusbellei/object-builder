@@ -35,13 +35,13 @@ function createDirectories() {
   dirs.forEach((dir) => {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
-      log(`📁 Diretório criado: ${dir}`, "blue");
+      log(`📁 Directory created: ${dir}`, "blue");
     }
   });
 }
 
 function checkDependencies() {
-  log("🔍 Verificando dependências...", "cyan");
+  log("🔍 Checking dependencies...", "cyan");
 
   const requiredPaths = [
     { path: CONFIG.FLEX_SDK, name: "Flex SDK" },
@@ -61,12 +61,12 @@ function checkDependencies() {
   const missing = requiredPaths.filter((item) => !fs.existsSync(item.path));
 
   if (missing.length > 0) {
-    log("❌ ERRO: Dependências não encontradas:", "red");
+    log("❌ ERROR: Dependencies not found:", "red");
     missing.forEach((item) => log(`   - ${item.name}: ${item.path}`, "red"));
     process.exit(1);
   }
 
-  // Verificar playerglobal.swc
+  // Check playerglobal.swc
   const playerglobalPath = path.join(
     CONFIG.FLEX_SDK,
     "frameworks",
@@ -76,11 +76,11 @@ function checkDependencies() {
     "playerglobal.swc"
   );
   if (!fs.existsSync(playerglobalPath)) {
-    log(`❌ ERRO: playerglobal.swc não encontrado: ${playerglobalPath}`, "red");
+    log(`❌ ERROR: playerglobal.swc not found: ${playerglobalPath}`, "red");
     process.exit(1);
   }
 
-  // Verificar bibliotecas externas
+  // Check external libraries
   const externalLibs = [
     "mignari_core.swc",
     "mignari.swc",
@@ -92,29 +92,29 @@ function checkDependencies() {
     .map((lib) => path.join(CONFIG.PROJECT, "libs", lib))
     .filter((lib) => fs.existsSync(lib));
 
-  // OSMF precisa ser incluída, não externa
+  // OSMF library needs to be included, not external
   const osmfPath = path.join(CONFIG.PROJECT, "libs", "osmf.swc");
   const includeOsmf = fs.existsSync(osmfPath) ? [osmfPath] : [];
 
   if (existingExternalLibs.length > 0) {
-    log("⚠️  Bibliotecas externas encontradas:", "yellow");
+    log("⚠️  External libraries found:", "yellow");
     existingExternalLibs.forEach((lib) =>
       log(`   - ${path.basename(lib)}`, "yellow")
     );
   }
 
-  log("✅ Dependências principais encontradas!", "green");
+  log("✅ Main dependencies found!", "green");
 }
 
 function generateCertificate() {
   const certPath = path.join(CONFIG.PROJECT, `${CONFIG.CERT_NAME}.p12`);
 
   if (fs.existsSync(certPath)) {
-    log("📜 Certificado já existe, usando o existente...", "yellow");
+    log("📜 Certificate already exists, using the existing one...", "yellow");
     return Promise.resolve();
   }
 
-  log("🔐 Gerando novo certificado...", "cyan");
+  log("🔐 Generating new certificate...", "cyan");
 
   return new Promise((resolve, reject) => {
     const adtCommand = `"${path.join(
@@ -127,25 +127,28 @@ function generateCertificate() {
 
     exec(adtCommand, (error, stdout, stderr) => {
       if (error) {
-        log(`❌ Erro ao gerar certificado: ${stderr || error.message}`, "red");
+        log(
+          `❌ Error generating certificate: ${stderr || error.message}`,
+          "red"
+        );
         reject(error);
         return;
       }
 
       if (fs.existsSync(certPath)) {
-        log("✅ Certificado gerado com sucesso!", "green");
+        log("✅ Certificate generated successfully!", "green");
         resolve();
       } else {
-        reject(new Error("Falha ao criar certificado"));
+        reject(new Error("Failed to create certificate"));
       }
     });
   });
 }
 
 function buildLibraryPaths() {
-  // Bibliotecas principais do Flex/AIR
+  // Main libraries from Flex/AIR
   const coreLibraries = [
-    // Bibliotecas básicas do Flex
+    // Basic libraries from Flex
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "framework.swc"),
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "spark.swc"),
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "sparkskins.swc"),
@@ -153,11 +156,11 @@ function buildLibraryPaths() {
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "rpc.swc"),
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "mx", "mx.swc"),
 
-    // Bibliotecas AIR (correto: vem do Flex SDK)
+    // AIR libraries (correct: comes from Flex SDK)
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "air", "airframework.swc"),
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "air", "airspark.swc"),
 
-    // Bibliotecas AIR do AIR SDK (para UpdateEvent, etc.)
+    // AIR libraries from AIR SDK (for UpdateEvent, etc.)
     path.join(
       CONFIG.AIRSDK,
       "frameworks",
@@ -174,18 +177,18 @@ function buildLibraryPaths() {
     ),
   ];
 
-  // Verificar quais bibliotecas existem
+  // Check which libraries exist
   const existingCoreLibs = coreLibraries.filter((lib) => fs.existsSync(lib));
   const missingCoreLibs = coreLibraries.filter((lib) => !fs.existsSync(lib));
 
   if (missingCoreLibs.length > 0) {
-    log("⚠️  Algumas bibliotecas principais não foram encontradas:", "yellow");
+    log("⚠️  Some main libraries were not found:", "yellow");
     missingCoreLibs.forEach((lib) =>
       log(`   - ${path.basename(lib)}`, "yellow")
     );
   }
 
-  // Bibliotecas externas
+  // External libraries
   const externalLibs = [
     "mignari_core.swc",
     "mignari.swc",
@@ -197,11 +200,11 @@ function buildLibraryPaths() {
     .map((lib) => path.join(CONFIG.PROJECT, "libs", lib))
     .filter((lib) => fs.existsSync(lib));
 
-  // OSMF precisa ser incluída, não externa
+  // OSMF needs to be included, not external
   const osmfPath = path.join(CONFIG.PROJECT, "libs", "osmf.swc");
   const includeOsmf = fs.existsSync(osmfPath) ? [osmfPath] : [];
 
-  // Caminhos de biblioteca
+  // Library paths
   const libraryPaths = [
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs"),
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs", "mx"),
@@ -222,13 +225,13 @@ function buildLibraryPaths() {
 
 function compileWorker() {
   return new Promise((resolve, reject) => {
-    log("🔧 Compilando ObjectBuilderWorker.swf...", "cyan");
+    log("🔧 Compiling ObjectBuilderWorker.swf...", "cyan");
 
-    // Criar diretório workerswfs se não existir
+    // Create workerswfs directory if it doesn't exist
     const workerDir = path.join(CONFIG.PROJECT, "workerswfs");
     if (!fs.existsSync(workerDir)) {
       fs.mkdirSync(workerDir, { recursive: true });
-      log(`📁 Diretório criado: ${workerDir}`, "blue");
+      log(`📁 Directory created: ${workerDir}`, "blue");
     }
 
     const playerglobalPath = path.resolve(
@@ -265,7 +268,7 @@ function compileWorker() {
       )}"`,
       `-library-path+="${path.join(CONFIG.PROJECT, "libs")}"`,
       `-source-path+="${path.join(CONFIG.PROJECT, "src")}"`,
-      `-locale=`, // Desabilitar locale para worker
+      `-locale=`, // Disable locale for worker
       `-compiler.debug=false`,
       `-compiler.optimize=true`,
       `-compiler.strict=false`,
@@ -278,9 +281,9 @@ function compileWorker() {
       )}"`,
     ].join(" ");
 
-    log("Executando comando de compilação do worker...", "blue");
+    log("Executing command to compile worker...", "blue");
 
-    // Definir variáveis de ambiente para o processo
+    // Define environment variables for the process
     const env = {
       ...process.env,
       PLAYERGLOBAL_HOME: path.resolve(
@@ -296,7 +299,7 @@ function compileWorker() {
       },
       (error, stdout, stderr) => {
         if (error) {
-          log(`❌ Erro ao compilar worker: ${stderr || error.message}`, "red");
+          log(`❌ Error compiling worker: ${stderr || error.message}`, "red");
           reject(error);
           return;
         }
@@ -307,13 +310,13 @@ function compileWorker() {
           "ObjectBuilderWorker.swf"
         );
         if (!fs.existsSync(workerPath)) {
-          reject(new Error("Falha ao gerar ObjectBuilderWorker.swf!"));
+          reject(new Error("Failed to generate ObjectBuilderWorker.swf!"));
           return;
         }
 
         const workerStats = fs.statSync(workerPath);
         log(
-          `✅ Worker compilado! SWF: ${(workerStats.size / 1024 / 1024).toFixed(
+          `✅ Worker compiled! SWF: ${(workerStats.size / 1024 / 1024).toFixed(
             2
           )} MB`,
           "green"
@@ -326,11 +329,11 @@ function compileWorker() {
 
 function compileProject() {
   return new Promise((resolve, reject) => {
-    log("🚀 Compilando ObjectBuilder.mxml...", "cyan");
+    log("🚀 Compiling ObjectBuilder.mxml...", "cyan");
 
     const { libraryPaths, includedLibs } = buildLibraryPaths();
 
-    // Usar uma abordagem mais simples - definir o caminho completo do playerglobal
+    // Use a simpler approach - define the complete path of playerglobal
     const playerglobalPath = path.resolve(
       path.join(
         CONFIG.FLEX_SDK,
@@ -378,16 +381,16 @@ function compileProject() {
       `-compiler.verbose-stacktraces=true`,
       `-compiler.debug=false`,
       `-compiler.optimize=true`,
-      `-compiler.strict=false`, // Menos rigoroso para projetos legados
-      `-warnings=false`, // Reduzir warnings verbosos
-      `-compiler.accessible=false`, // Desabilitar acessibilidade que pode causar problemas
+      `-compiler.strict=false`, // Less strict for legacy projects
+      `-warnings=false`, // Reduce verbose warnings
+      `-compiler.accessible=false`, // Disable accessibility that can cause problems
       `"${path.join(CONFIG.PROJECT, "src", "ObjectBuilder.mxml")}"`,
       `-o "${path.join(CONFIG.PROJECT, "bin-debug", "ObjectBuilder.swf")}"`,
     ].join(" ");
 
-    log("Executando comando de compilação...", "blue");
+    log("Executing command to compile...", "blue");
 
-    // Definir variáveis de ambiente para o processo
+    // Define environment variables for the process
     const env = {
       ...process.env,
       PLAYERGLOBAL_HOME: path.resolve(
@@ -403,13 +406,13 @@ function compileProject() {
       },
       (error, stdout, stderr) => {
         if (error) {
-          log(`❌ Erro ao compilar: ${stderr || error.message}`, "red");
+          log(`❌ Error compiling: ${stderr || error.message}`, "red");
           reject(error);
           return;
         }
 
         if (stdout) {
-          // Filtrar apenas mensagens importantes
+          // Filter only important messages
           const lines = stdout
             .split("\n")
             .filter(
@@ -421,7 +424,7 @@ function compileProject() {
                 line.trim().length === 0
             );
           if (lines.length > 1) {
-            log("Saída da compilação:", "blue");
+            log("Output of compilation:", "blue");
             console.log(lines.join("\n"));
           }
         }
@@ -432,13 +435,13 @@ function compileProject() {
           "ObjectBuilder.swf"
         );
         if (!fs.existsSync(swfPath)) {
-          reject(new Error("Falha ao gerar ObjectBuilder.swf!"));
+          reject(new Error("Failed to generate ObjectBuilder.swf!"));
           return;
         }
 
         const swfStats = fs.statSync(swfPath);
         log(
-          `✅ Compilação concluída! SWF: ${(
+          `✅ Compilation completed! SWF: ${(
             swfStats.size /
             1024 /
             1024
@@ -446,7 +449,7 @@ function compileProject() {
           "green"
         );
 
-        // Copiar arquivos necessários para bin-debug
+        // Copy necessary files to bin-debug
         const filesToCopy = [
           { src: "src/firstRun/versions.xml", dest: "bin-debug/versions.xml" },
           { src: "src/firstRun/sprites.xml", dest: "bin-debug/sprites.xml" },
@@ -457,7 +460,7 @@ function compileProject() {
           const destPath = path.join(CONFIG.PROJECT, file.dest);
           if (fs.existsSync(srcPath)) {
             fs.copyFileSync(srcPath, destPath);
-            log(`📄 Copiado: ${file.dest}`, "blue");
+            log(`📄 Copied: ${file.dest}`, "blue");
           }
         });
 
@@ -469,7 +472,7 @@ function compileProject() {
 
 function packageApplication() {
   return new Promise((resolve, reject) => {
-    log("⚙️ Empacotando ObjectBuilder.exe...", "cyan");
+    log("⚙️ Packaging ObjectBuilder.exe...", "cyan");
 
     const adtCommand = [
       `"${path.join(CONFIG.AIRSDK, "bin", "adt.bat")}"`,
@@ -490,7 +493,7 @@ function packageApplication() {
       )}" versions.xml sprites.xml`,
     ].join(" ");
 
-    log("Executando comando de empacotamento...", "blue");
+    log("Executing command to package...", "blue");
 
     exec(
       adtCommand,
@@ -499,47 +502,41 @@ function packageApplication() {
       },
       (error, stdout, stderr) => {
         if (error) {
-          log(`❌ Erro ao empacotar: ${stderr || error.message}`, "red");
+          log(`❌ Error packaging: ${stderr || error.message}`, "red");
           reject(error);
           return;
         }
 
         const exePath = path.join(CONFIG.PROJECT, "bin", "ObjectBuilder.exe");
         if (!fs.existsSync(exePath)) {
-          reject(new Error("Falha ao gerar ObjectBuilder.exe!"));
+          reject(new Error("Failed to generate ObjectBuilder.exe!"));
           return;
         }
 
         const exeStats = fs.statSync(exePath);
         if (exeStats.isDirectory()) {
-          // Bundle - diretório
+          // Bundle - directory
           const mainExe = path.join(exePath, "ObjectBuilder.exe");
           const swfFile = path.join(exePath, "ObjectBuilder.swf");
 
           if (fs.existsSync(mainExe) && fs.existsSync(swfFile)) {
             const swfStats = fs.statSync(swfFile);
             log(
-              `✅ Aplicação empacotada! Bundle criado em: ${exePath}`,
+              `✅ Application packaged! Bundle created in: ${exePath}`,
               "green"
             );
             log(
-              `📱 SWF principal: ${(swfStats.size / 1024 / 1024).toFixed(
-                2
-              )} MB`,
+              `📱 Main SWF: ${(swfStats.size / 1024 / 1024).toFixed(2)} MB`,
               "green"
             );
           } else {
-            reject(
-              new Error(
-                "Bundle criado mas arquivos principais não encontrados!"
-              )
-            );
+            reject(new Error("Bundle created but main files not found!"));
             return;
           }
         } else {
-          // Arquivo único
+          // Single file
           log(
-            `✅ Aplicação empacotada! EXE: ${(
+            `✅ Application packaged! EXE: ${(
               exeStats.size /
               1024 /
               1024
@@ -554,48 +551,48 @@ function packageApplication() {
   });
 }
 
-// Função principal
+// Main function
 async function main() {
   try {
-    log("🚀 Iniciando build do ObjectBuilder...", "cyan");
+    log("🚀 Starting build of ObjectBuilder...", "cyan");
     log("=".repeat(50), "cyan");
 
-    // 1. Criar diretórios
+    // 1. Create directories
     createDirectories();
 
-    // 2. Verificar dependências
+    // 2. Check dependencies
     checkDependencies();
 
-    // 3. Gerar certificado se necessário
+    // 3. Generate certificate if necessary
     await generateCertificate();
 
-    // 4. Compilar worker primeiro
+    // 4. Compile worker first
     await compileWorker();
 
-    // 5. Compilar projeto principal
+    // 5. Compile main project
     await compileProject();
 
-    // 6. Empacotar aplicação
+    // 6. Package application
     await packageApplication();
 
     log("=".repeat(50), "green");
-    log("🎉 Build concluído com sucesso!", "green");
+    log("🎉 Build completed successfully!", "green");
     log(
-      `📁 Executável: ${path.join(CONFIG.PROJECT, "bin", "ObjectBuilder.exe")}`,
+      `📁 Executable: ${path.join(CONFIG.PROJECT, "bin", "ObjectBuilder.exe")}`,
       "green"
     );
     log(
-      `🔐 Certificado: ${CONFIG.CERT_NAME}.p12 (senha: ${CONFIG.CERT_PASS})`,
+      `🔐 Certificate: ${CONFIG.CERT_NAME}.p12 (password: ${CONFIG.CERT_PASS})`,
       "yellow"
     );
   } catch (error) {
     log("=".repeat(50), "red");
-    log(`❌ Build falhou: ${error.message}`, "red");
+    log(`❌ Build failed: ${error.message}`, "red");
     process.exit(1);
   }
 }
 
-// Executar se chamado diretamente
+// Execute if called directly
 if (require.main === module) {
   main();
 }
