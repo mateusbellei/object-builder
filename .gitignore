@@ -17,3 +17,5 @@ workerswfs/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
+/libs/Flex_4.16.1_AIR_32.0
+AIRSDK_51.2.1

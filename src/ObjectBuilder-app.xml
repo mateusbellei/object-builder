@@ -11,16 +11,16 @@
 	</copyright>
 
 	<initialWindow>
-		<content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+		<content>ObjectBuilder.swf</content>
 		<autoOrients>false</autoOrients>
 		<fullScreen>false</fullScreen>
-		<visible>false</visible>
+		<visible>true</visible>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
 	</initialWindow>
 
 	<supportedLanguages>en es pt</supportedLanguages>
 
-	<architecture>64</architecture>
+	<!-- <architecture>64</architecture> -->
 
 	<icon>
 		<image16x16>icon/app/icon16.png</image16x16>
