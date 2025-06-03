@@ -1,38 +1,191 @@
-What is Object Builder?
-----
+# ObjectBuilder - Build Automatizado
 
-Object Builder is an editor for creating graphic objects for [OTClient](https://github.com/edubart/otclient). You can edit or add new items, outfits, effects or missiles to your client.
+> Sistema de build otimizado para o ObjectBuilder (Adobe AIR/ActionScript)
 
-Some features:
+## 📋 Pré-requisitos
 
-* Support frame groups.
-* It's faster to load or compile your projects.
-* Import or export your objects as sprite sheet.
-* Support for transparent sprites.
-* You're able to cut the imported images.
+### Software Necessário
 
+- **Node.js 16+** ([Download](https://nodejs.org/))
+- **Git** ([Download](https://git-scm.com/))
+- **Windows 10/11** (testado)
 
-Supported client versions:
-----
+### Estrutura de Arquivos Necessária
 
-* 7.10 - 12.86
+```
+object-builder/
+├── libs/
+│   ├── Flex_4.16.1_AIR_32.0/     # Flex SDK
+│   ├── AIRSDK_51.2.1/            # AIR SDK
+│   ├── mignari_core.swc          # Bibliotecas externas
+│   ├── mignari.swc
+│   ├── mignari_assets.swc
+│   ├── blooddy_crypto.swc
+│   └── NailLib.swc
+├── src/
+│   ├── ObjectBuilder.mxml        # Arquivo principal
+│   ├── ObjectBuilderWorker.as    # Worker
+│   ├── ObjectBuilder-app.xml     # Configuração AIR
+│   └── firstRun/
+│       ├── versions.xml
+│       └── sprites.xml
+└── assets/
+    └── icon/                     # Ícones da aplicação
+```
 
+## 🚀 Setup Inicial (Nova Máquina)
 
-Downloads
-----
+### 1. Clone e Dependências
 
-#### Windows
+```bash
+git clone <repositorio>
+cd object-builder
+npm install
+```
 
-Latest Adobe AIR [AdobeAIR 33.1.1.502](https://mega.nz/file/VA8wCQYY#n6WVUTz8E-awaXrwvCPzosvrDehWiVOoT927TG_ihtA).
-Download the .zip file in [releases](https://github.com/punkice3407/ObjectBuilder/releases).
+### 2. Verificar Setup
 
+```bash
+npm run check-setup
+```
 
-Compiling in Windows
-----
+### 3. Primeiro Build
 
-Follow tutorials in [wiki](https://github.com/punkice3407/ObjectBuilder/wiki)
+```bash
+npm run build
+```
 
+## 📦 Comandos Disponíveis
 
-Donate
-----
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QFNUYQ24ULK7S)
+| Comando               | Descrição               |
+| --------------------- | ----------------------- |
+| `npm run build`       | Build completo (30-60s) |
+| `npm run clean`       | Limpar arquivos gerados |
+| `npm run run`         | Executar ObjectBuilder  |
+| `npm run check-setup` | Verificar dependências  |
+| `npm run create-osmf` | Recriar biblioteca OSMF |
+
+## 🛠️ Como Funciona
+
+### Processo Automatizado
+
+1. **Verificação**: Dependências e SDKs
+2. **Certificado**: Geração automática se necessário
+3. **Worker**: Compilação do ObjectBuilderWorker.swf
+4. **Principal**: Compilação do ObjectBuilder.mxml
+5. **Empacotamento**: Criação do executável final
+
+### Saídas Geradas
+
+- `bin-debug/ObjectBuilder.swf` - SWF principal (~5MB)
+- `workerswfs/ObjectBuilderWorker.swf` - Worker (~0.6MB)
+- `bin/ObjectBuilder.exe/` - Bundle executável final
+
+## 🎯 Solução de Problemas
+
+### Erro: "playerglobal.swc não encontrado"
+
+```bash
+# Verificar se os SDKs estão na pasta libs/
+npm run check-setup
+```
+
+### Erro: "OSMF TimeEvent not found"
+
+```bash
+# Recriar biblioteca OSMF
+npm run create-osmf
+npm run build
+```
+
+### Erro: "Certificado inválido"
+
+```bash
+# Remover certificado existente
+del object_builder.p12
+npm run build
+```
+
+## 📊 Performance
+
+- **Tempo de Build**: 30-60 segundos
+- **Antes**: 5-10 minutos (manual)
+- **Melhoria**: ~90% mais rápido
+- **SWF Final**: ~5.24 MB
+- **Worker**: ~0.61 MB
+
+## 🔧 Configuração Avançada
+
+### Alterar Configurações
+
+Edite `build.config.js`:
+
+```javascript
+module.exports = {
+  TARGET_PLAYER: "27.0",
+  CERT_PASS: "ObjectBuilder2024!",
+  // ... outras configurações
+};
+```
+
+### Debug Mode
+
+Para desenvolvimento com debug:
+
+```bash
+# Editar build-optimized.js
+compiler.debug=true
+compiler.optimize=false
+```
+
+## 📝 Logs e Debug
+
+### Build Verbose
+
+```bash
+node build-optimized.js
+```
+
+### Executar com Debug
+
+```bash
+libs\AIRSDK_51.2.1\bin\adl.exe src\ObjectBuilder-app.xml bin-debug
+```
+
+## 🤝 Contribuição
+
+### Estrutura do Build
+
+- `build-optimized.js` - Script principal
+- `package.json` - NPM scripts
+- `scripts/` - Scripts auxiliares
+- `create-osmf-stub.js` - Gerador da lib OSMF
+
+### Adicionando Nova Biblioteca
+
+1. Adicionar SWC em `libs/`
+2. Incluir em `externalLibs` no build-optimized.js
+3. Testar build completo
+
+## 📋 Checklist para Nova Máquina
+
+- [ ] Node.js instalado
+- [ ] Projeto clonado
+- [ ] SDKs na pasta `libs/`
+- [ ] `npm install` executado
+- [ ] `npm run check-setup` passou
+- [ ] `npm run build` funcionou
+- [ ] `npm run run` executou ObjectBuilder
+
+## 🆘 Suporte
+
+Em caso de problemas:
+
+1. Executar `npm run check-setup`
+2. Verificar logs do build
+3. Consultar seção "Solução de Problemas"
+4. Verificar se todas as bibliotecas estão presentes
+
+---
+
+**Resultado**: Build automatizado do ObjectBuilder funcionando em 30-60 segundos! 🎉

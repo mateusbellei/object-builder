@@ -12,7 +12,10 @@
     "cert:generate": "node scripts/generate-cert.js",
     "cert:info": "node scripts/cert-info.js",
     "run": "node scripts/run-app.js",
-    "start": "npm run build && npm run run"
+    "start": "npm run build && npm run run",
+    "check-setup": "node scripts/check-setup.js",
+    "create-osmf": "node create-osmf-stub.js",
+    "setup": "node setup.js"
   },
   "keywords": [
     "tibia",
