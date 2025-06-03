@@ -66,6 +66,11 @@ npm run build
 **Antes**: Comando ADT malformado
 **Depois**: Sintaxe correta com `-C` para cada diretório
 
+### 9. ❌ → ✅ Worker SWF Ausente no Bundle
+
+**Antes**: ObjectBuilderWorker.swf não incluído no pacote final
+**Depois**: Worker incluído corretamente no comando ADT
+
 ## ⚡ Melhorias Implementadas
 
 ### Sistema de Build Automatizado

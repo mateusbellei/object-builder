@@ -88,13 +88,19 @@ function checkDependencies() {
     "blooddy_crypto.swc",
     "NailLib.swc",
   ];
-  const missingLibs = externalLibs.filter(
-    (lib) => !fs.existsSync(path.join("libs", lib))
-  );
+  const existingExternalLibs = externalLibs
+    .map((lib) => path.join(CONFIG.PROJECT, "libs", lib))
+    .filter((lib) => fs.existsSync(lib));
 
-  if (missingLibs.length > 0) {
-    log("⚠️  Bibliotecas externas não encontradas:", "yellow");
-    missingLibs.forEach((lib) => log(`   - ${lib}`, "yellow"));
+  // OSMF precisa ser incluída, não externa
+  const osmfPath = path.join(CONFIG.PROJECT, "libs", "osmf.swc");
+  const includeOsmf = fs.existsSync(osmfPath) ? [osmfPath] : [];
+
+  if (existingExternalLibs.length > 0) {
+    log("⚠️  Bibliotecas externas encontradas:", "yellow");
+    existingExternalLibs.forEach((lib) =>
+      log(`   - ${path.basename(lib)}`, "yellow")
+    );
   }
 
   log("✅ Dependências principais encontradas!", "green");
@@ -191,6 +197,10 @@ function buildLibraryPaths() {
     .map((lib) => path.join(CONFIG.PROJECT, "libs", lib))
     .filter((lib) => fs.existsSync(lib));
 
+  // OSMF precisa ser incluída, não externa
+  const osmfPath = path.join(CONFIG.PROJECT, "libs", "osmf.swc");
+  const includeOsmf = fs.existsSync(osmfPath) ? [osmfPath] : [];
+
   // Caminhos de biblioteca
   const libraryPaths = [
     path.join(CONFIG.FLEX_SDK, "frameworks", "libs"),
@@ -204,7 +214,7 @@ function buildLibraryPaths() {
     libraryPaths: libraryPaths
       .map((lib) => `-library-path+="${lib}"`)
       .join(" "),
-    includedLibs: [...existingCoreLibs, ...existingExternalLibs]
+    includedLibs: [...existingCoreLibs, ...existingExternalLibs, ...includeOsmf]
       .map((lib) => `-include-libraries+="${lib}"`)
       .join(" "),
   };
@@ -370,6 +380,7 @@ function compileProject() {
       `-compiler.optimize=true`,
       `-compiler.strict=false`, // Menos rigoroso para projetos legados
       `-warnings=false`, // Reduzir warnings verbosos
+      `-compiler.accessible=false`, // Desabilitar acessibilidade que pode causar problemas
       `"${path.join(CONFIG.PROJECT, "src", "ObjectBuilder.mxml")}"`,
       `-o "${path.join(CONFIG.PROJECT, "bin-debug", "ObjectBuilder.swf")}"`,
     ].join(" ");
@@ -434,6 +445,22 @@ function compileProject() {
           ).toFixed(2)} MB`,
           "green"
         );
+
+        // Copiar arquivos necessários para bin-debug
+        const filesToCopy = [
+          { src: "src/firstRun/versions.xml", dest: "bin-debug/versions.xml" },
+          { src: "src/firstRun/sprites.xml", dest: "bin-debug/sprites.xml" },
+        ];
+
+        filesToCopy.forEach((file) => {
+          const srcPath = path.join(CONFIG.PROJECT, file.src);
+          const destPath = path.join(CONFIG.PROJECT, file.dest);
+          if (fs.existsSync(srcPath)) {
+            fs.copyFileSync(srcPath, destPath);
+            log(`📄 Copiado: ${file.dest}`, "blue");
+          }
+        });
+
         resolve();
       }
     );
@@ -454,6 +481,7 @@ function packageApplication() {
       `"${path.join(CONFIG.PROJECT, "bin", "ObjectBuilder.exe")}"`,
       `"${path.join(CONFIG.PROJECT, "src", "ObjectBuilder-app.xml")}"`,
       `-C "${path.join(CONFIG.PROJECT, "bin-debug")}" ObjectBuilder.swf`,
+      `-C "${path.join(CONFIG.PROJECT, "workerswfs")}" ObjectBuilderWorker.swf`,
       `-C "${path.join(CONFIG.PROJECT, "assets")}" icon`,
       `-C "${path.join(
         CONFIG.PROJECT,
@@ -482,10 +510,9 @@ function packageApplication() {
           return;
         }
 
-        // Para aplicações AIR com target bundle, o resultado é uma pasta
         const exeStats = fs.statSync(exePath);
         if (exeStats.isDirectory()) {
-          // Verificar se contém os arquivos principais
+          // Bundle - diretório
           const mainExe = path.join(exePath, "ObjectBuilder.exe");
           const swfFile = path.join(exePath, "ObjectBuilder.swf");
 
@@ -510,10 +537,10 @@ function packageApplication() {
             return;
           }
         } else {
-          const exeSize = fs.statSync(exePath);
+          // Arquivo único
           log(
             `✅ Aplicação empacotada! EXE: ${(
-              exeSize.size /
+              exeStats.size /
               1024 /
               1024
             ).toFixed(2)} MB`,

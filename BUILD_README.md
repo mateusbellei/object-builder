@@ -43,15 +43,18 @@ O sistema executa automaticamente:
 
 ```
 bin/ObjectBuilder.exe/
-├── ObjectBuilder.exe      # Executável principal
-├── ObjectBuilder.swf      # Aplicação Flash (5.24 MB)
-├── Adobe AIR/            # Runtime AIR
-├── icon/                 # Ícones da aplicação
-├── META-INF/            # Metadados AIR
-├── versions.xml         # Configurações
-├── sprites.xml          # Configurações
-└── mimetype             # Tipo MIME
+├── ObjectBuilder.exe          # Executável principal
+├── ObjectBuilder.swf          # Aplicação Flash (5.24 MB)
+├── ObjectBuilderWorker.swf    # Worker SWF (0.61 MB)
+├── Adobe AIR/                 # Runtime AIR
+├── icon/                      # Ícones da aplicação
+├── META-INF/                  # Metadados AIR
+├── versions.xml               # Configurações
+├── sprites.xml                # Configurações
+└── mimetype                   # Tipo MIME
 ```
+
+**Observação**: O sistema gera um bundle AIR (`-target bundle`) que inclui o Adobe AIR Runtime e todos os arquivos necessários, incluindo o **ObjectBuilderWorker.swf** que é essencial para o funcionamento correto da aplicação.
 
 ## 🛠️ Scripts Disponíveis
 
