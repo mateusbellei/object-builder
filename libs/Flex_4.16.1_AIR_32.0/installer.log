@@ -1,0 +1,35 @@
+Installer path: C:\Program Files\MoonshineSDKInstaller
+Installer version 4.7.0 (windows)
+Available Memory: 30617600 (64-bit)
+Using Locale: pt_BR
+Buscado o espelho da URL de download do SDK a partir do CGI.
+Criando diretório do Apache Flex
+Criando diretório temporário
+Efetuando download do Apache Flex SDK a partir de: https://dlcdn.apache.org/flex/4.16.1/binaries/apache-flex-sdk-4.16.1-bin.zip
+A verificar a assinatura MD5 do Apache Flex SDK
+A assinatura MD5 do download efetuado do Apache Flex SDK MD5 são válidas com sua referência. O arquivo é válido.
+Descompactando: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\temp\apache-flex-sdk-4.16.1-bin.zip
+Descompactação finalizada: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\temp\apache-flex-sdk-4.16.1-bin.zip
+Preparing build script run
+Preparing script for Apache Flex SDK
+Found script file: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\installer.xml
+Running script by: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\installer.xml
+Efetuando download do Adobe AIR Runtime Kit for Windows a partir de: https://airdownload.adobe.com/air/win/download/32.0//AdobeAIRSDK.zip
+Validating download: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0/in/AdobeAIRSDK.zip
+Descompactação finalizada: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0/in/AdobeAIRSDK.zip
+Error #2005
+Criando diretório do Apache Flex
+Criando diretório temporário
+Efetuando download do Apache Flex SDK a partir de: https://dlcdn.apache.org/flex/4.16.1/binaries/apache-flex-sdk-4.16.1-bin.zip
+A verificar a assinatura MD5 do Apache Flex SDK
+A assinatura MD5 do download efetuado do Apache Flex SDK MD5 são válidas com sua referência. O arquivo é válido.
+Descompactando: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\temp\apache-flex-sdk-4.16.1-bin.zip
+Descompactação finalizada: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\temp\apache-flex-sdk-4.16.1-bin.zip
+Preparing build script run
+Preparing script for Apache Flex SDK
+Found script file: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\installer.xml
+Running script by: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0\installer.xml
+Efetuando download do Adobe AIR Runtime Kit for Windows a partir de: https://airdownload.adobe.com/air/win/download/32.0//AdobeAIRSDK.zip
+Validating download: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0/in/AdobeAIRSDK.zip
+Descompactação finalizada: C:\MoonshineSDKs\Flex_SDK\Flex_4.16.1_AIR_32.0/in/AdobeAIRSDK.zip
+Error #2005
