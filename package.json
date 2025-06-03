@@ -15,7 +15,9 @@
     "start": "npm run build && npm run run",
     "check-setup": "node scripts/check-setup.js",
     "create-osmf": "node create-osmf-stub.js",
-    "setup": "node setup.js"
+    "setup": "node setup.js",
+    "download-large": "node scripts/download-large-libs.js",
+    "postinstall": "npm run download-large"
   },
   "keywords": [
     "tibia",
