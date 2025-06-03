@@ -1,0 +1,29 @@
+{
+  "name": "object-builder",
+  "version": "0.5.5",
+  "description": "ObjectBuilder - Tibia Sprite Editor",
+  "main": "build-optimized.js",
+  "scripts": {
+    "build": "node build-optimized.js",
+    "build:worker": "node scripts/compile-worker.js",
+    "build:main": "node scripts/compile-main.js",
+    "build:package": "node scripts/package-app.js",
+    "clean": "node scripts/clean.js",
+    "cert:generate": "node scripts/generate-cert.js",
+    "cert:info": "node scripts/cert-info.js",
+    "run": "node scripts/run-app.js",
+    "start": "npm run build && npm run run"
+  },
+  "keywords": [
+    "tibia",
+    "sprite",
+    "editor",
+    "actionscript",
+    "air"
+  ],
+  "author": "ObjectBuilder Contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "chalk": "^4.1.2"
+  }
+}
