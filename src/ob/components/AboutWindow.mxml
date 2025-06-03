@@ -75,7 +75,7 @@
             protected function dbrButtonClickHandler(event:MouseEvent):void
             {
                 // Please, dont remove or change it.
-                navigateToURL(new URLRequest("https://dbko-inferno.pl/"));
+                navigateToURL(new URLRequest("https://mtzdev.vercel.app/"));
             }
 
             protected function otpButtonClickHandler(event:MouseEvent):void
@@ -145,7 +145,7 @@
         <s:Label text="Supported By:" />
 
         <mx:LinkButton id="dbrButton"
-                  label="dbko-inferno.pl"
+                  label="mtzdev.vercel.app"
                   fontWeight="bold"
                   fontSize="18"
                   color="0x03fcd7"
