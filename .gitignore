@@ -11,11 +11,24 @@ workerswfs/
 .settings/
 .vscode/
 
+# Certificates (security sensitive)
 *.p12
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
-/libs/Flex_4.16.1_AIR_32.0
-AIRSDK_51.2.1
+# SDKs are included, but exclude large files that exceed GitHub limits
+# GitHub limit: 100MB per file
+libs/**/AdobeAIRSDK.zip
+libs/**/*.a
+libs/**/lib/aot/
+libs/**/in/airsdk/
+libs/**/in/AdobeAIRSDK.zip
+
+# Keep essential SDK files but exclude heavy AOT/native libraries
+libs/**/frameworks/
+libs/**/bin/
+libs/**/templates/
+libs/**/samples/
+libs/**/runtimes/air/
