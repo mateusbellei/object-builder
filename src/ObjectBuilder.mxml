@@ -88,6 +88,7 @@ THE SOFTWARE.
             import nail.utils.StringUtil;
             import nail.utils.WindowUtil;
             import nail.utils.isNullOrEmpty;
+            import nail.utils.AppVersion;
 
             import ob.commands.HideProgressBarCommand;
             import ob.commands.LoadVersionsCommand;
@@ -1090,9 +1091,7 @@ THE SOFTWARE.
 
                 _settings = new ObjectBuilderSettings();
 
-                if (!_settingsManager.loadSettings(_settings) ||
-                    _settings.settingsApplicationVersion != Descriptor.getVersionNumber()) {
-
+                if (!_settingsManager.loadSettings(_settings)) {
                     firstRun();
                 }
 

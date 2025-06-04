@@ -1,6 +1,6 @@
 # 📋 ObjectBuilder - Changelog
 
-## [0.5.5] - 2025-06-03 - 🚀 PERFORMANCE OPTIMIZATION RELEASE
+## [0.6.0] - 2025-06-03 - 🚀 PERFORMANCE OPTIMIZATION RELEASE
 
 ### 🎯 **MAJOR PERFORMANCE IMPROVEMENTS**
 
@@ -82,7 +82,7 @@ npm run clean          # Clean build artifacts
 
 ## [Previous Versions]
 
-### [0.5.4] - 2025-05-XX - Build System Implementation
+### [0.5.5] - 2025-05-XX - Build System Implementation
 
 - Automated build system
 - SDK management
