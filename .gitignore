@@ -32,3 +32,6 @@ libs/**/bin/
 libs/**/templates/
 libs/**/samples/
 libs/**/runtimes/air/
+
+# node_modules
+node_modules/

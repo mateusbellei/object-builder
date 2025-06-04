@@ -7,7 +7,7 @@
 	<versionNumber>0.5.5</versionNumber>
 	<versionLabel>0.5.5</versionLabel>
 	<copyright>
-		<![CDATA[Copyright (c) 2014-2023 <a href="https://github.com/Mignari/ObjectBuilder/graphs/contributors">Contributors</a>]]>
+		<![CDATA[Copyright (c) 2014-2025 <a href="https://mtzdev.vercel.app/">Contributors</a>]]>
 	</copyright>
 
 	<initialWindow>
@@ -15,12 +15,19 @@
 		<autoOrients>false</autoOrients>
 		<fullScreen>false</fullScreen>
 		<visible>true</visible>
-		<requestedDisplayResolution>high</requestedDisplayResolution>
+		<renderMode>direct</renderMode>
+		<requestedDisplayResolution>standard</requestedDisplayResolution>
+		<!-- AGGRESSIVE PERFORMANCE OPTIMIZATIONS -->
+		<systemChrome>standard</systemChrome>
+		<transparent>false</transparent>
+		<maximizable>true</maximizable>
+		<resizable>true</resizable>
 	</initialWindow>
 
 	<supportedLanguages>en es pt</supportedLanguages>
 
-	<!-- <architecture>64</architecture> -->
+	<!-- Enable extended desktop features -->
+	<supportedProfiles>extendedDesktop</supportedProfiles>
 
 	<icon>
 		<image16x16>icon/app/icon16.png</image16x16>
