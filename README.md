@@ -31,20 +31,14 @@ ObjectBuilder is a tool for creating and editing objects for Tibia/OpenTibia ser
 
 ### **Method 1: Optimized Executable (Recommended)**
 
+* Download the latest version on Releases
+
+### **Method 2: Compile your own executable with optimized compiler**
+
+* Compile and run the executable on:
+
 ```bash
 bin\ObjectBuilder.exe\ObjectBuilder.exe
-```
-
-### **Method 2: Maximum Performance Mode**
-
-```bash
-.\launch-optimized.bat
-```
-
-### **Method 3: Debug Mode**
-
-```bash
-.\debug-run.bat
 ```
 
 ## 🔧 Build System
