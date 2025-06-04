@@ -1,34 +1,37 @@
 {
   "name": "object-builder",
   "version": "0.5.5",
-  "description": "ObjectBuilder - Tibia Sprite Editor",
-  "main": "build-optimized.js",
+  "description": "High-Performance ObjectBuilder with DirectX acceleration and aggressive optimizations",
+  "main": "scripts/build-classic.js",
   "scripts": {
-    "build": "node build-optimized.js",
-    "build:worker": "node scripts/compile-worker.js",
-    "build:main": "node scripts/compile-main.js",
-    "build:package": "node scripts/package-app.js",
-    "clean": "node scripts/clean.js",
-    "cert:generate": "node scripts/generate-cert.js",
-    "cert:info": "node scripts/cert-info.js",
-    "run": "node scripts/run-app.js",
-    "start": "npm run build && npm run run",
-    "check-setup": "node scripts/check-setup.js",
-    "create-osmf": "node create-osmf-stub.js",
+    "build": "node scripts/build-classic.js",
+    "package": ".\\package-simple.bat",
+    "run": "bin\\ObjectBuilder.exe\\ObjectBuilder.exe",
+    "run:performance": ".\\launch-optimized.bat",
+    "debug": ".\\debug-run.bat",
     "setup": "node setup.js",
-    "download-large": "node scripts/download-large-libs.js",
-    "postinstall": "npm run download-large"
+    "clean": "rmdir /s /q bin-debug bin workerswfs 2>nul || echo Cleaned"
   },
   "keywords": [
+    "objectbuilder",
     "tibia",
-    "sprite",
-    "editor",
+    "opentibia",
+    "adobe-air",
     "actionscript",
-    "air"
+    "performance-optimized",
+    "directx"
   ],
   "author": "ObjectBuilder Contributors",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mtzdev/object-builder"
+  },
   "devDependencies": {
-    "chalk": "^4.1.2"
-  }
+    "fs-extra": "^10.0.0"
+  },
+  "dependencies": {}
 }
