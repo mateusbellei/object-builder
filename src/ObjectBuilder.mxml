@@ -58,6 +58,8 @@ THE SOFTWARE.
 
             import flash.net.registerClassAlias;
             import flash.utils.Dictionary;
+            import flash.geom.Point;
+            import flash.geom.Rectangle;
 
             import mx.core.UIComponent;
             import mx.events.CloseEvent;
@@ -2075,16 +2077,32 @@ THE SOFTWARE.
                 {
                     var bitmap:BitmapData = event.target.bitmap;
                     var thing:ThingType = thingTypeEditor.getThingTypeResult();
+                    
+                    // Check if this outfit has multiple frame groups
+                    var hasMultipleFrameGroups:Boolean = (thing.category == ThingCategory.OUTFIT && 
+                                                         thingTypeEditor.bindableThingType.groups > 1);
+                    
+                    if (hasMultipleFrameGroups) {
+                        // Handle multi-frame group import (idle/stand + walking)
+                        handleMultiFrameGroupImport(bitmap, thing);
+                    } else {
+                        // Handle single frame group import (existing behavior)
+                        handleSingleFrameGroupImport(bitmap, thing);
+                    }
+                }
+                
+                function handleSingleFrameGroupImport(bitmap:BitmapData, thing:ThingType):void
+                {
                     var groupType:uint = thingTypeEditor.frameGroupSlider.value;
-
                     var frameGroup:FrameGroup = thing.getFrameGroup(groupType);
                     var size:Size = frameGroup.getSpriteSheetSize();
-                    if (bitmap.width == size.width && size.height == bitmap.height)
+                    
+                    if (bitmap.width == size.width && bitmap.height == size.height)
                     {
                         var sprites:Dictionary = new Dictionary();
-
                         var length:uint = frameGroup.spriteIndex.length;
                         sprites[groupType] = new Vector.<SpriteData>(length, true);
+                        
                         for (var i:uint = 0; i < length; i++)
                             sprites[groupType][i] = SpriteData.createSpriteData(frameGroup.spriteIndex[i]);
 
@@ -2099,6 +2117,85 @@ THE SOFTWARE.
                         var message:String = resourceManager.getString("strings", "invalidSpriteSheetSize");
                         Alert.show(StringUtil.format(message, size.width, size.height),
                             resourceManager.getString("strings", "invalidSpriteSheetSizeTitle"));
+                    }
+                }
+                
+                function handleMultiFrameGroupImport(bitmap:BitmapData, thing:ThingType):void
+                {
+                    var idleFrameGroup:FrameGroup = thing.getFrameGroup(FrameGroupType.DEFAULT);
+                    var walkingFrameGroup:FrameGroup = thing.getFrameGroup(FrameGroupType.WALKING);
+                    
+                    // Calculate expected sizes
+                    var idleSize:Size = idleFrameGroup.getSpriteSheetSize();
+                    var walkingSize:Size = walkingFrameGroup.getSpriteSheetSize();
+                    
+                    // Calculate combined size (walking is typically below idle)
+                    var totalWidth:uint = Math.max(idleSize.width, walkingSize.width);
+                    var totalHeight:uint = idleSize.height + walkingSize.height;
+                    
+                    // Check if bitmap matches expected combined size
+                    if (bitmap.width == totalWidth && bitmap.height == totalHeight)
+                    {
+                        // Split the bitmap into two parts
+                        var idleBitmap:BitmapData = new BitmapData(idleSize.width, idleSize.height, true, 0x00FF00FF);
+                        var walkingBitmap:BitmapData = new BitmapData(walkingSize.width, walkingSize.height, true, 0x00FF00FF);
+                        
+                        // Copy idle part (top)
+                        var idleRect:Rectangle = new Rectangle(0, 0, idleSize.width, idleSize.height);
+                        idleBitmap.copyPixels(bitmap, idleRect, new Point(0, 0));
+                        
+                        // Copy walking part (bottom)
+                        var walkingRect:Rectangle = new Rectangle(0, idleSize.height, walkingSize.width, walkingSize.height);
+                        walkingBitmap.copyPixels(bitmap, walkingRect, new Point(0, 0));
+                        
+                        // Create sprite data for both frame groups
+                        var sprites:Dictionary = new Dictionary();
+                        
+                        // Idle frame group sprites
+                        var idleLength:uint = idleFrameGroup.spriteIndex.length;
+                        sprites[FrameGroupType.DEFAULT] = new Vector.<SpriteData>(idleLength, true);
+                        for (var i:uint = 0; i < idleLength; i++)
+                            sprites[FrameGroupType.DEFAULT][i] = SpriteData.createSpriteData(idleFrameGroup.spriteIndex[i]);
+                        
+                        // Walking frame group sprites
+                        var walkingLength:uint = walkingFrameGroup.spriteIndex.length;
+                        sprites[FrameGroupType.WALKING] = new Vector.<SpriteData>(walkingLength, true);
+                        for (var j:uint = 0; j < walkingLength; j++)
+                            sprites[FrameGroupType.WALKING][j] = SpriteData.createSpriteData(walkingFrameGroup.spriteIndex[j]);
+                        
+                        // Create thing data and apply sprite sheets
+                        var data:ThingData = ThingData.create(OBDVersions.OBD_VERSION_3, _version.value, thing, sprites);
+                        data.setSpriteSheet(idleFrameGroup, idleBitmap);
+                        data.setSpriteSheet(walkingFrameGroup, walkingBitmap);
+                        
+                        thingTypeEditor.thingData = data;
+                        confirmButton.enabled = true;
+                        thingTypeEditor.invalidateThingData();
+                        
+                        // Clean up temporary bitmaps
+                        idleBitmap.dispose();
+                        walkingBitmap.dispose();
+                    }
+                    else
+                    {
+                        // Try alternative layout detection or fallback to current frame group
+                        var currentGroupType:uint = thingTypeEditor.frameGroupSlider.value;
+                        var currentFrameGroup:FrameGroup = thing.getFrameGroup(currentGroupType);
+                        var currentSize:Size = currentFrameGroup.getSpriteSheetSize();
+                        
+                        if (bitmap.width == currentSize.width && bitmap.height == currentSize.height)
+                        {
+                            // Fallback to single frame group import
+                            handleSingleFrameGroupImport(bitmap, thing);
+                        }
+                        else
+                        {
+                            var message:String = resourceManager.getString("strings", "invalidSpriteSheetSize");
+                            var expectedSizes:String = "Expected: " + totalWidth + "x" + totalHeight + " (combined) or " + 
+                                                     currentSize.width + "x" + currentSize.height + " (current frame group)";
+                            Alert.show(StringUtil.format(message, expectedSizes, bitmap.width + "x" + bitmap.height),
+                                resourceManager.getString("strings", "invalidSpriteSheetSizeTitle"));
+                        }
                     }
                 }
             }
