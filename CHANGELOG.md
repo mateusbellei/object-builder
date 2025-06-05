@@ -1,6 +1,6 @@
 # 📋 ObjectBuilder - Changelog
 
-## Version 0.6.1 (2025-01-XX)
+## [0.7.0] - 2025-06-03 - 🚀 Drag and Drop Improvements
 
 ### 🎉 **New Features**
 
