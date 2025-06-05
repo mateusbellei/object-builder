@@ -1,5 +1,53 @@
 # 📋 ObjectBuilder - Changelog
 
+## Version 0.6.1 (2025-01-XX)
+
+### 🎉 **New Features**
+
+#### **Enhanced Multi-Frame Group Drag & Drop Support**
+
+- **Improved Spritesheet Import**: Fixed drag & drop functionality for outfits with multiple frame groups (idle/stand + walking)
+- **Automatic Layout Detection**: The system now automatically detects combined spritesheets and splits them correctly between frame groups
+- **Smart Size Validation**: Enhanced validation that supports both combined layouts and individual frame group layouts
+- **Fallback Support**: If combined layout doesn't match, falls back to importing into the currently selected frame group
+
+### 🔧 **Technical Improvements**
+
+#### **Drag & Drop System Enhancements**
+
+- **`handleMultiFrameGroupImport()`**: New function to handle spritesheets containing both idle and walking animations
+- **Layout Detection Logic**: Automatically calculates expected combined dimensions (width = max of both, height = sum of both)
+- **Memory Management**: Proper cleanup of temporary bitmaps to prevent memory leaks
+- **Error Messages**: Improved error messages showing expected vs actual dimensions
+
+#### **Frame Group Processing**
+
+- **Automatic Splitting**: Spritesheets are automatically split into idle (top) and walking (bottom) sections
+- **Independent Processing**: Each frame group is processed independently with correct sprite data
+- **Type Safety**: Proper handling of FrameGroupType.DEFAULT and FrameGroupType.WALKING
+
+### 📋 **Use Cases Now Supported**
+
+1. **Single Frame Group Outfits**: Continue to work as before (7 animations, 2 layers → 512x448 px)
+2. **Multi Frame Group Outfits**:
+   - Combined Layout: e.g., 512x896 px (idle: 512x448 + walking: 512x448)
+   - Individual Import: Can still import to specific frame groups individually
+3. **Automatic Detection**: System intelligently chooses the right import method
+
+### 🐛 **Bug Fixes**
+
+- Fixed drag & drop not working for outfits with idle/stand + walking frame groups
+- Fixed spritesheet size validation for multi-frame group scenarios
+- Fixed memory management in bitmap processing
+
+### 💡 **Future Enhancements**
+
+- Support for horizontal layout detection (side-by-side frame groups)
+- Advanced layout pattern recognition
+- Batch processing of multiple spritesheets
+
+---
+
 ## [0.6.0] - 2025-06-03 - 🚀 PERFORMANCE OPTIMIZATION RELEASE
 
 ### 🎯 **MAJOR PERFORMANCE IMPROVEMENTS**
@@ -368,3 +416,5 @@ Bugfixes:
 
 - Fix import and export browse directory.
 - Fix 'laying corpse' to 'lying object'
+
+_For older versions, see git history._
